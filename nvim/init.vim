@@ -18,11 +18,13 @@ call plug#begin('~/.vim/plugged')
 " Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'catppuccin/nvim'
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-buftabline'
 
 
@@ -129,4 +131,30 @@ set cursorline
 " highlight CursorLine ctermbg=None
 " autocmd InsertEnter * highlight  CursorLine ctermbg=17 ctermfg=None
 " autocmd InsertLeave * highlight  CursorLine ctermbg=None ctermfg=None
+
+set foldmethod=syntax
+set foldlevel=99
+
+let g:catppuccin_flavour = "mocha" "latte, frappe. macchiato, mocha
+colorscheme catppuccin
+
+lua << END
+require('lualine').setup {
+  options = {
+    theme = "catppuccin"
+  }
+}
+require('lualine').setup()
+END
+
+" use <tab> for trigger completion and navigate to the next complete item    
+function! s:check_back_space() abort                                                                                                          
+  let col = col('.') - 1    
+  return !col || getline('.')[col - 1]  =~ '\s'    
+endfunction    
+     
+inoremap <silent><expr> <Tab>    
+      \ pumvisible() ? "\<C-n>" :    
+      \ <SID>check_back_space() ? "\<Tab>" :    
+      \ coc#refresh()  
 
