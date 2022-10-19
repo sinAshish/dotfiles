@@ -5,16 +5,19 @@
 " ---------------------------------------------------------------------------
 " drop vi support - kept for vim compatibility but not needed for nvim
 set nocompatible
+set termguicolors
 
 " Helps force plugins to load correctly when it is turned back on below
 filetype off 
+let g:coc_disable_startup_warning = 1
+
 
 " TODO: Load plugins here (pathogen or vundle)
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-" Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'
 " Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'tomtom/tcomment_vim'
@@ -22,8 +25,11 @@ Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'adelarsq/vim-devicons-emoji'
+Plug 'aserowy/tmux.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-buftabline'
 
@@ -55,7 +61,7 @@ au FocusGained,BufEnter * :silent! !
 " use Unicode
 set encoding=utf-8
 set fenc=utf-8
-set fencs=iso-2022-jp,euc-jp,cp932
+set fencs="iso-2022-jp,euc-jp,cp932,ucs-bom,utf-8,default,latin1"
 
 " errors flash screen rather than emit beep
 set visualbell
@@ -122,7 +128,7 @@ set clipboard=unnamedplus
 
 " Show character column
 " highlight ColorColumn ctermbg=DarkBlue
-" set colorcolumn=80
+set colorcolumn=100
 
 " CursorLine - sometimes autocmds are not performant; turn off if so
 " http://vim.wikia.com/wiki/Highlight_current_line
@@ -136,16 +142,17 @@ set foldmethod=syntax
 set foldlevel=99
 
 let g:catppuccin_flavour = "mocha" "latte, frappe. macchiato, mocha
+" colorscheme catppuccin
+
+lua require("catppuccin").setup()
+lua require("tmux").setup()
+lua require('nvim-web-devicons').setup()
+lua require('nvim-web-devicons').get_icons()
+
 colorscheme catppuccin
 
-lua << END
-require('lualine').setup {
-  options = {
-    theme = "catppuccin"
-  }
-}
-require('lualine').setup()
-END
+lua require('lualine').setup({options = {theme = "catppuccin"}})
+" lua require('lualine').setup()
 
 " use <tab> for trigger completion and navigate to the next complete item    
 function! s:check_back_space() abort                                                                                                          
