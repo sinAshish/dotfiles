@@ -23,6 +23,8 @@ Plug 'junegunn/goyo.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'airblade/vim-gitgutter'
+Plug 'psf/black', { 'branch': 'stable' }
+" Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'preservim/nerdtree'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
