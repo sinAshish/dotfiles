@@ -7,34 +7,39 @@
 set nocompatible
 set termguicolors
 
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:coc_disable_startup_warning = 1
+
 " Helps force plugins to load correctly when it is turned back on below
 filetype off 
 let g:coc_disable_startup_warning = 1
-
 
 " TODO: Load plugins here (pathogen or vundle)
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-sensible'
 " Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'airblade/vim-gitgutter'
-Plug 'psf/black', { 'branch': 'stable' }
-" Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'preservim/nerdtree'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'valloric/youcompleteme'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'preservim/nerdtree'
 Plug 'adelarsq/vim-devicons-emoji'
-Plug 'aserowy/tmux.nvim'
+Plug 'davidhalter/jedi-vim'
+" Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-buftabline'
-
 
 " Plug 'Valloric/YouCompleteMe' it's very heavy - don't use it
 
@@ -42,6 +47,8 @@ Plug 'ap/vim-buftabline'
 call plug#end()
 " autocmd vimenter * NERDTree
 
+"lua require("catppuccin").setup()   
+"lua require('lualine').setup()
 " Turn on syntax highlighting
 syntax on
 " enable syntax processing
@@ -53,7 +60,7 @@ filetype plugin indent on
 
 " number of lines at the beginning and end of files checked for file-specific vars
 set modelines=0
-set mouse=v
+
 " reload files changed outside of Vim not currently modified in Vim (needs below)
 set autoread
 
@@ -63,13 +70,13 @@ au FocusGained,BufEnter * :silent! !
 " use Unicode
 set encoding=utf-8
 set fenc=utf-8
-set fencs="iso-2022-jp,euc-jp,cp932,ucs-bom,utf-8,default,latin1"
+set fencs=iso-2022-jp,euc-jp,cp932
 
 " errors flash screen rather than emit beep
 set visualbell
 
 " make Backspace work like Delete
-set backspace=indent,eol,start
+" set backspace=indent,eol,start
 
 " don't create `filename~` backups
 " set nobackup
@@ -144,19 +151,14 @@ set foldmethod=syntax
 set foldlevel=99
 
 let g:catppuccin_flavour = "mocha" "latte, frappe. macchiato, mocha
-" colorscheme catppuccin
-
 lua require("catppuccin").setup()
-lua require("tmux").setup()
-lua require('nvim-web-devicons').setup()
-lua require('nvim-web-devicons').get_icons()
-
 colorscheme catppuccin
+" let g:lightline = {'colorscheme': 'catppuccin_mocha'}
 
 lua require('lualine').setup({options = {theme = "catppuccin"}})
-" lua require('lualine').setup()
+lua require('lualine').setup()
 
-" use <tab> for trigger completion and navigate to the next complete item    
+" use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort                                                                                                          
   let col = col('.') - 1    
   return !col || getline('.')[col - 1]  =~ '\s'    
@@ -166,35 +168,6 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :    
       \ <SID>check_back_space() ? "\<Tab>" :    
       \ coc#refresh()  
-" air-line
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
 
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
