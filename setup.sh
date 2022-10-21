@@ -11,16 +11,22 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/p
 
 
 # install vim-plug for vim and nvim (if present on servers)
-
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+if [ -d "~/.vim" ];then
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+else
+  mkdir -p ~/.vim/
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
 
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+if [ -d ".config/nvim/" ]; then
+  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  
+  rsync -avz nvim/init.vim ~/.config/nvim/init.vim
+fi
 
 # now connect the dotfiles to .dotfiles on current system
-
-rsync -avz nvim/init.vim ~/.config/nvim/init.vim
 
 rsync -avz nvim/init.vim ~/.vimrc
 
@@ -28,8 +34,11 @@ rsync -avz .zshrc ~/.zshrc
 
 rsync -avz oh-my-zsh.sh ~/.oh-my-zsh/oh-my-zsh.sh
 
+rsync -avz ./robbyrussell.zsh-theme ~/.oh-my-zsh/themes/robbyrussell.zsh-theme
+
 echo "Now install the vim plugins by opening vim"
 
 echo "Then again execute this command: source ~/.zshrc "
 
+exec zsh
 source ~/.zshrc
