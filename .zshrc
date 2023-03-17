@@ -176,5 +176,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 alias open=xdg-open
-exec zsh
+
 alias lvim=/localhome/asa409/.local/bin/lvim
