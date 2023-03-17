@@ -131,4 +131,4 @@ alias novelgrabber='java -jar /home/jo/Novel-Grabber/Novel-Grabber/NG-Launcher.j
 #alias vtune='sudo /opt/intel/vtune_profiler/bin64/vtune-gui'
 # c15 ip ='199.60.17.15'
 #alias c15='ssh jca241@199.60.17.15'
-
+exec zsh
