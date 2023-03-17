@@ -145,10 +145,10 @@ PROMPT_VI_MODE_BOX='%B%S%F{green}[INSERT]'
 function zvm_after_select_vi_mode() {
   case $ZVM_MODE in
     $ZVM_MODE_NORMAL)
-        PROMPT_VI_MODE_BOX='%B%S%F{red}[NORMAL]'
+        PROMPT_VI_MODE_BOX='%F{blue}[NORMAL]'
     ;;
     $ZVM_MODE_INSERT)
-        PROMPT_VI_MODE_BOX='%B%S%F{green}[INSERT]'
+        PROMPT_VI_MODE_BOX='%F{green}[INSERT]'
     ;;
     $ZVM_MODE_VISUAL)
         PROMPT_VI_MODE_BOX='%B%S%F{yellow}[VISUAL]'
@@ -291,7 +291,7 @@ function zvm_after_select_vi_mode() {
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=1'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
