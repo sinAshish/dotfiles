@@ -1,0 +1,73 @@
+Host 1.223.118.148
+  HostName 1.223.118.148
+  User user
+  Port 3130
+
+Host narval
+  HostName narval.computecanada.ca
+  User asinha
+
+
+Host niagara
+  HostName niagara.scinet.utoronto.ca
+  User asinha
+
+Host mist
+  HostName mist.scinet.utoronto.ca
+  User asinha
+
+Host graham
+  HostName graham.computecanada.ca
+  User asinha
+
+Host hanen
+  HostName cedar.computecanada.ca
+  User hanenby
+
+Host cedar
+  HostName cedar.computecanada.ca
+  User asinha
+
+Host solar
+  HostName solar.cs.sfu.ca
+  User asa409
+  Port 24
+  RequestTTY yes
+  RemoteCommand bash
+
+Host ts11
+  HostName cs-mial-ts11.cmpt.sfu.ca
+  User asa409
+  Port 48555
+
+Host mial41
+  HostName cs-mial-41.cmpt.sfu.ca
+  User asa409
+
+Host mial35
+  HostName cs-mial-35.cmpt.sfu.ca
+  User asa409
+
+
+# Jump servers to lab from HOME
+Host lab41
+  HostName cs-mial-41.cmpt.sfu.ca
+  ProxyJump cedar,solar
+  #ProxyJump solar
+  User asa409
+  ForwardX11 yes
+
+Host lab35
+  HostName cs-mial-35.cmpt.sfu.ca
+  ProxyJump cedar,solar
+  #ProxyJump solar
+  User asa409
+  ForwardX11 yes
+
+Host labts11 
+  HostName cs-mial-ts11.cmpt.sfu.ca
+  ProxyJump cedar,solar
+  User asa409
+  ForwardX11 yes
+
+

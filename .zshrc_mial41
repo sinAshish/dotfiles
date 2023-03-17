@@ -1,0 +1,331 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+ZSH_DISABLE_COMPFIX=true
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+alias vi=nvim
+alias vim=nvim
+
+alias c='clear'
+alias cc='clear;clear'
+
+# search a command throug your history
+#
+alias h='history'
+alias hs='history | grep'
+alias hsi='history | grep -i'
+alias icat="kitty +kitten icat"
+
+export TERM=xterm-256color
+export TERMINAL='kitty'
+export EDITOR='nvim'
+export BROWSER='chrome' #brave
+# Search on the web
+# web_search from terminal
+
+function web_search() {
+  emulate -L zsh
+
+  # define search engine URLS
+  typeset -A urls
+  urls=(
+    reddit          "https://www.reddit.com/search/?q=" 
+    google          "https://www.google.com/search?q="
+    brave           "https://search.brave.com/search?q="
+    github          "https://github.com/search?q="
+    stackoverflow   "https://stackoverflow.com/search?q="
+    scholar         "https://scholar.google.com/scholar?q="
+  )
+
+  # check whether the search engine is supported
+  if [[ -z "$urls[$1]" ]]; then
+    echo "Search engine '$1' not supported."
+    return 1
+  fi
+
+  # search or go to main page depending on number of arguments passed
+  if [[ $# -gt 1 ]]; then
+    # build search url:
+    # join arguments passed with '+', then append to search engine URL
+    url="${urls[$1]}$(omz_urlencode ${@[2,-1]})"
+  else
+    # build main page url:
+    # split by '/', then rejoin protocol (1) and domain (2) parts with '//'
+    url="${(j://:)${(s:/:)urls[$1]}[1,2]}"
+  fi
+
+  open_command "$url"
+}
+
+alias reddit='web_search reddit'
+alias google='web_search google'
+alias github='web_search github'
+alias stackoverflow='web_search stackoverflow'
+alias scholar='web_search scholar'
+
+#
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="robbyrussell"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(tmux common-aliases  git-extras tmux tmuxinator git zsh-autosuggestions zsh-syntax-highlighting)
+plugins+=(zsh-vi-mode)
+
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+# Autoselect Vi mode indicator
+PROMPT_VI_MODE_BOX='%B%S%F{green}[INSERT]'
+function zvm_after_select_vi_mode() {
+  case $ZVM_MODE in
+    $ZVM_MODE_NORMAL)
+        PROMPT_VI_MODE_BOX='%B%S%F{red}[NORMAL]'
+    ;;
+    $ZVM_MODE_INSERT)
+        PROMPT_VI_MODE_BOX='%B%S%F{green}[INSERT]'
+    ;;
+    $ZVM_MODE_VISUAL)
+        PROMPT_VI_MODE_BOX='%B%S%F{yellow}[VISUAL]'
+    ;;
+    $ZVM_MODE_VISUAL_LINE)
+        PROMPT_VI_MODE_BOX='%B%S%F{yellow}[VISUAL]'
+    ;;
+    $ZVM_MODE_REPLACE)
+        PROMPT_VI_MODE_BOX='%B%S%F{blue}[REPLACE]'
+    ;;
+  esac
+}
+#function prompt_rdm46theme_setup() {
+#    local _isign=$'\UF10C'
+#    local _csign=$'\UF111'
+#    _vi_ins="%{${fg[blue]}%} ${_isign} %{${reset_color}%}"
+#    _vi_nor="%{${fg[green]}%} ${_csign} %{${reset_color}%}"
+#    _vi_vis="%{${fg[magenta]}%} ${_csign} %{${reset_color}%}"
+#    _vi_rep="%{${fg[yellow]}%} ${_isign} %{${reset_color}%}"
+#    # for zsh jeffreytse/zsh-vi-mode -------------------------------------------
+#    function zvm_after_select_vi_mode() {
+#        case $ZVM_MODE in
+#            $ZVM_MODE_NORMAL)
+#                vi_mode=${_vi_nor} ;;
+#            $ZVM_MODE_INSERT)
+#                vi_mode=${_vi_ins} ;;
+#            $ZVM_MODE_VISUAL)
+#                vi_mode=${_vi_vis} ;;
+#            $ZVM_MODE_VISUAL_LINE)
+#                vi_mode=${_vi_vis} ;;
+#            $ZVM_MODE_REPLACE)
+#                vi_mode=${_vi_rep} ;;
+#        esac
+#    }
+#    # for zsh builtin bindkey -v -----------------------------------------------
+#    # if zvm not loaded
+#    if [[ $(type zvm_init) == 'zvm_init not found' ]]; then
+#        vi_mode=${_vi_ins}
+#        function zle-keymap-select {
+#            vi_mode="${${KEYMAP/vicmd/${_vi_nor}}/(main|viins)/${_vi_ins}}"
+#            zle reset-prompt
+#        }
+#        zle -N zle-keymap-select
+#        function zle-line-finish { vi_mode=${_vi_ins}; }
+#        zle -N zle-line-finish
+#    fi
+#    local P_PROM=''
+#    # with nerd fonts
+#    local P_LOGIN=$'\UF2BD'
+#    local P_BEGINR=$'\UE0C7'
+#    local P_BEGIN=$'\UE0C6'
+#    local P_MIDTEX=$'\UE0C4'
+#    local P_END=$'\UE0C6'
+#    local P_DIR=$'\UF07C'
+#    PROMPT="\
+#%{${bg[green]}%}%{${fg[red]}%} ${P_LOGIN}%{${reset_color}%}\
+#%{${bg[green]}%}%{${fg_bold[black]}%} %n %{${reset_color}%}\
+#\
+#%{${bg[blue]}%}%{${fg[green]}%}${P_MIDTEX}%{${reset_color}%}\
+#%{${bg[blue]}%}%{${fg[red]}%} $(print_os_glyph)%{${reset_color}%}\
+#%{${bg[blue]}%}%{${fg_bold[black]}%} %m %{${reset_color}%}\
+#%{${bg[black]}%}%{${fg[blue]}%}${P_BEGIN}%{${reset_color}%}\
+#%{${fg[black]}%}${P_MIDTEX}%{${reset_color}%}
+#\
+#%{${bg[black]}%}%{${fg[green]}%} ${P_DIR}%{${reset_color}%}\
+#%{${bg[black]}%}%{${fg[brblack]}%} %~  %{${reset_color}%}\
+#%{${fg[black]}%}${P_MIDTEX}%{${reset_color}%}
+#\
+#%{${fg[black]}%}${P_PROM}%{${reset_color}%}"'${vi_mode}%# '
+#
+#    PROMPT2="\
+#%{${bg[black]}%}%{${fg[green]}%} %_ >%{${reset_color}%}\
+#%{${fg[black]}%}${P_MIDTEX}%{${reset_color}%} "
+#}
+
+# export MANPATH="/usr/local/man:$MANPATH"
+# The plugin will auto execute this zvm_after_select_vi_mode function
+#function zvm_after_select_vi_mode() {
+#  case $ZVM_MODE in
+#    $ZVM_MODE_NORMAL)
+#     RPROMPT="%{$fg_bold[NORMAL]%}%{$reset_color%}"
+#     zle reset-prompt
+#    ;;
+#    $ZVM_MODE_INSERT)
+#     RPROMPT="[INSERT]"
+#     zle reset-prompt
+#    ;;
+#    $ZVM_MODE_VISUAL)w
+#     RPROMPT="%{$fg_bold[red]%}%{$reset_color%}"
+#     zle reset-prompt
+#    ;;
+#    $ZVM_MODE_VISUAL_LINE)
+#     RPROMPT="%{$fg_bold[red]%}%{$reset_color%}"
+#     zle reset-prompt
+#    ;;
+#    $ZVM_MODE_REPLACE)
+#     RPROMPT="%{$fg_bold[red]%}%{$reset_color%}"
+#     zle reset-prompt
+#    ;;
+#  esac
+#}
+## Prompt
+### Get git branch
+#parse_git_branch() {
+#  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
+#}
+#
+### Enable substitution in the prompt.
+#setopt prompt_subst
+#
+### Set prompt
+#prompt_norm='%F{39}%~%f%F{243}$(parse_git_branch)%f%F{196} <%f '
+#prompt_ins='%F{39}%~%f%F{243}$(parse_git_branch)%f%F{82} >%f '
+#prompt=$prompt_norm
+### The plugin will auto execute this `zvm_after_select_vi_mode` function
+#function zvm_after_select_vi_mode() {
+#  case $ZVM_MODE in
+#    $ZVM_MODE_NORMAL)
+#      prompt=$prompt_norm
+#      ;;
+#    $ZVM_MODE_INSERT)
+#      prompt=$prompt_ins
+#      ;;
+#  esac
+#}
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+ if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='nvim'
+ else
+   export EDITOR='nvim'
+ fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=1'
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/localhome/asa409/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/localhome/asa409/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/localhome/asa409/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/localhome/asa409/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+alias open=xdg-open
+
+alias lvim=/localhome/asa409/.local/bin/lvim
+
+#exec zsh
+zle-keymap-select () {
+  case $KEYMAP in
+    vicmd) print -rn -- $terminfo[cvvis];; # block cursor
+    viins|main) print -rn -- $terminfo[cnorm];; # less visible cursor
+  esac
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+bindkey -v
+RPROMPT='${PROMPT_VI_MODE_BOX}'
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
