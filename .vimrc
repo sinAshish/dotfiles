@@ -5,12 +5,30 @@
 " ---------------------------------------------------------------------------
 " drop vi support - kept for vim compatibility but not needed for nvim
 set nocompatible
-set termguicolors
+" set termguicolors
+
+if exists('+termguicolors')
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+colorscheme catppuccin_mocha
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:coc_disable_startup_warning = 1
 
 " Helps force plugins to load correctly when it is turned back on below
 filetype off 
 let g:coc_disable_startup_warning = 1
 
+" https://vi.stackexchange.com/questions/31491/why-does-my-lightline-status-line-not-show-up-right-away
+" autocmd VimEnter * call lightline#update()
+
+" let g:skip_defaults_vim = 1
 
 " TODO: Load plugins here (pathogen or vundle)
 " Plugins will be downloaded under the specified directory.
@@ -21,22 +39,14 @@ Plug 'tpope/vim-sensible'
 " Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+Plug 'catppuccin/vim', {'as': 'catppuccin'}
 Plug 'airblade/vim-gitgutter'
 Plug 'psf/black', { 'branch': 'stable' }
-" Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'preservim/nerdtree'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'adelarsq/vim-devicons-emoji'
-Plug 'aserowy/tmux.nvim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons'
 Plug 'ap/vim-buftabline'
-
-
-" Plug 'Valloric/YouCompleteMe' it's very heavy - don't use it
+Plug 'itchyny/lightline.vim'  
+Plug 'Valloric/YouCompleteMe' " it's very heavy - don't use it
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -53,19 +63,19 @@ filetype plugin indent on
 
 " number of lines at the beginning and end of files checked for file-specific vars
 set modelines=0
-set mouse=v
+
 " reload files changed outside of Vim not currently modified in Vim (needs below)
 set autoread
-
 " http://stackoverflow.com/questions/2490227/how-does-vims-autoread-work#20418591
 au FocusGained,BufEnter * :silent! !
 
 " use Unicode
+set encoding=UTF-8
 set encoding=utf-8
 set fenc=utf-8
 set fencs="iso-2022-jp,euc-jp,cp932,ucs-bom,utf-8,default,latin1"
 
-" errors flash screen rather than emit beep
+""  errors flash screen rather than emit beep
 set visualbell
 
 " make Backspace work like Delete
@@ -87,11 +97,12 @@ set scrolloff=2
 " Tab key enters 2 spaces
 " To enter a TAB character when `expandtab` is in effect,
 " CTRL-v-TAB
-set expandtab tabstop=2 shiftwidth=2 softtabstop=2 
+set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 " Indent new line the same as the preceding line
 set autoindent
-set smartindent
+" set smartindent
+set smarttab      " be smart when using tabs 
 
 " statusline indicates insert or normal mode
 set showmode showcmd
@@ -104,7 +115,7 @@ set ttyfast lazyredraw
 set showmatch
 
 " http://vim.wikia.com/wiki/Searching
-set hlsearch incsearch ignorecase smartcase
+set hlsearch incsearch ignorecase smartcase " cindent comdemt makes vim ifnore smartindent
 
 " As opposed to `wrap`
 "set nowrap
@@ -124,9 +135,15 @@ set wildmenu wildmode=list:longest,full
 " http://learnvimscriptthehardway.stevelosh.com/chapters/17.html
 set laststatus=2 statusline=%F
 
+" return to last edit position when opening files
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal g'\"" | endif
 " Use system clipboard
 " http://vim.wikia.com/wiki/Accessing_the_system_clipboard
 set clipboard=unnamedplus
+set noshowcmd
+set listchars=tab:--
+set noshowmode
+set shortmess+=F
 
 " Show character column
 " highlight ColorColumn ctermbg=DarkBlue
@@ -143,18 +160,32 @@ set cursorline
 set foldmethod=syntax
 set foldlevel=99
 
-let g:catppuccin_flavour = "mocha" "latte, frappe. macchiato, mocha
-" colorscheme catppuccin
+" let g:colorscheme = "catppuccin_mocha"
 
-lua require("catppuccin").setup()
-lua require("tmux").setup()
-lua require('nvim-web-devicons').setup()
-lua require('nvim-web-devicons').get_icons()
+"let g:lightline = {'colorscheme': 'catppuccin_mocha'}  
+let g:lightline = {
+            \ 'colorscheme': 'catppuccin_mocha',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \ },
+      \ }
+function! LightlineFilename()
+  let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+  let modified = &modified ? ' +' : ''
+  return filename . modified
+endfunction
 
-colorscheme catppuccin
 
-lua require('lualine').setup({options = {theme = "catppuccin"}})
-" lua require('lualine').setup()
+" let's try to play around with airline for a bit
+" let g:airline_theme="catppuccin_mocha" 
+" https://vi.stackexchange.com/questions/31491/why-does-my-lightline-status-line-not-show-up-right-away
+" autocmd VimEnter * call lightline#update()
+
+set mouse=v
 
 " use <tab> for trigger completion and navigate to the next complete item    
 function! s:check_back_space() abort                                                                                                          
@@ -166,38 +197,10 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :    
       \ <SID>check_back_space() ? "\<Tab>" :    
       \ coc#refresh()  
-" air-line
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
 
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+
 

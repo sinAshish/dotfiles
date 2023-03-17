@@ -24,7 +24,10 @@ Host hanen
   HostName cedar.computecanada.ca
   User hanenby
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a3b81a9d552be79531ff39cb6e8a3914005b2f7
 Host cedar
   HostName cedar.computecanada.ca
   User asinha
@@ -33,6 +36,11 @@ Host solar
   HostName solar.cs.sfu.ca
   User asa409
   Port 24
+<<<<<<< HEAD
+=======
+  RequestTTY yes
+  RemoteCommand bash
+>>>>>>> 0a3b81a9d552be79531ff39cb6e8a3914005b2f7
 
 Host ts11
   HostName cs-mial-ts11.cmpt.sfu.ca
