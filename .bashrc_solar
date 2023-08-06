@@ -138,6 +138,17 @@ else
         export PATH="/localhome/asa409/miniconda3/bin:$PATH"
     fi
 fi
+<<<<<<< HEAD:.bashrc_solar
+export CILK="cilk"
+#export LD_PRELOAD="/home/jca241/Documents/Hoard/src/libhoard.so"
+alias diff=colordiff
+alias novelgrabber='java -jar /home/jo/Novel-Grabber/Novel-Grabber/NG-Launcher.jar'
+#export LOWMEM="1"
+#alias sourceVtune='source /opt/intel/vtune_profiler/vtune-vars.sh'
+#alias vtune='sudo /opt/intel/vtune_profiler/bin64/vtune-gui'
+# c15 ip ='199.60.17.15'
+#alias c15='ssh jca241@199.60.17.15'
+=======
 unset __conda_setup
 
 if [ -f "/localhome/asa409/miniconda3/etc/profile.d/mamba.sh" ]; then
@@ -164,4 +175,5 @@ export EDITOR="nvim"
 export TERMINAL='kitty'
 export BROWSER='brave'
 
+>>>>>>> 0a3b81a9d552be79531ff39cb6e8a3914005b2f7:.bashrc
 exec zsh
