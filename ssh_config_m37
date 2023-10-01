@@ -27,12 +27,18 @@ Host hanen
 Host cedar
   HostName cedar.computecanada.ca
   User asinha
+  ForwardX11 yes
+  ForwardX11Trusted yes
+  LocalForward 8888 localhost:8888
 
 Host solar
   HostName solar.cs.sfu.ca
   User asa409
   Port 24
-  RequestTTY yes
+  # RequestTTY auto
+  # ForwardX11 yes
+  # ForwardX11Trusted yes
+  # LocalForward 8000 localhost:8000
 
 Host ts11
   HostName cs-mial-ts11.cmpt.sfu.ca
@@ -66,6 +72,9 @@ Host lab35
 Host mial37
   HostName cs-mial-37.cmpt.sfu.ca
   User asa409
+  ForwardX11 yes
+  ForwardX11Trusted yes
+  LocalForward 9000 localhost:9000
   
 Host labts11 
   HostName cs-mial-ts11.cmpt.sfu.ca
