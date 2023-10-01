@@ -131,7 +131,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(tmux common-aliases vi-mode git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(tmux common-aliases vi-mode git zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -177,4 +177,3 @@ unset __conda_setup
 # <<< conda initialize <<<
 alias open=xdg-open
 
-alias lvim=/localhome/asa409/.local/bin/lvim
