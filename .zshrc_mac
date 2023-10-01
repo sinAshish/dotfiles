@@ -22,7 +22,7 @@ alias icat="kitty +kitten icat"
 export TERM=xterm-256color
 export TERMINAL='kitty'
 export EDITOR='nvim'
-export BROWSER='chrome' #brave
+export BROWSER='brave'
 # Search on the web
 # web_search from terminal
 
@@ -135,10 +135,10 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(rsync tmux vi-mode common-aliases  git-prompt autopep8 git zsh-autosuggestions zsh-syntax-highlighting zsh-interactive-cd
-)
+plugins=(rsync tmux common-aliases  git-prompt autopep8 git zsh-autosuggestions zsh-syntax-highlighting zsh-interactive-cd)
 #plugins=(tmux  git zsh-autosuggestions zsh-syntax-highlighting)
 plugins+=(zsh-vi-mode)
+plugins+=(zsh-fzf-history-search)
 source $ZSH/oh-my-zsh.sh
 bindkey -v                                                                                     
                                                                                                
@@ -155,8 +155,6 @@ autoload -U colors && colors
                                                                                                
 # Change prompt icon + color based on insert/normal vim mode in prompt                         
 # Will have no effect if you don't use pure as your ZSH theme                                  
-export PURE_PROMPT_SYMBOL="[I] ❯"                                                              
-export PURE_PROMPT_VICMD_SYMBOL="%{$fg[green]%}[N] ❮%{$reset_color%}"                          
                                                                                                
 # By default, we have insert mode shown on right hand side                                     
 export RPROMPT="%{$fg[blue]%}[INSERT]%{$reset_color%}"                                         
@@ -224,32 +222,34 @@ export KEYTIMEOUT=1
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 
+#MODE_INDICATOR="$(vi_mode_prompt_info)%F{white}+%f"
+#INSERT_MODE_INDICATOR="%F{yellow}+%f"
+#ZVM_VI_HIGHLIGHT_FOREGROUND=green             # Color name
+#ZVM_VI_HIGHLIGHT_FOREGROUND=#008800           # Hex value
+#ZVM_VI_HIGHLIGHT_BACKGROUND=red               # Color name
+#ZVM_VI_HIGHLIGHT_BACKGROUND=#ff0000           # Hex value
+#ZVM_VI_HIGHLIGHT_EXTRASTYLE=bold,underline    # bold and underline
+## Minimal Example
+#VI_MODE_SET_CURSOR=true                                                                        
+#VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true                                                       
+
+
+#export PATH="\$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="/usr/local/sbin:$PATH"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/ashish/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/ashish/miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/ashish/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/ashish/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/ashish/miniconda/etc/profile.d/conda.sh" ]; then
+        . "/Users/ashish/miniconda/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/ashish/miniconda3/bin:$PATH"
+        export PATH="/Users/ashish/miniconda/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-MODE_INDICATOR="$(vi_mode_prompt_info)%F{white}+%f"
-INSERT_MODE_INDICATOR="%F{yellow}+%f"
-ZVM_VI_HIGHLIGHT_FOREGROUND=green             # Color name
-ZVM_VI_HIGHLIGHT_FOREGROUND=#008800           # Hex value
-ZVM_VI_HIGHLIGHT_BACKGROUND=red               # Color name
-ZVM_VI_HIGHLIGHT_BACKGROUND=#ff0000           # Hex value
-ZVM_VI_HIGHLIGHT_EXTRASTYLE=bold,underline    # bold and underline
-# Minimal Example
-VI_MODE_SET_CURSOR=true                                                                        
-VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true                                                       
-
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#export PATH="\$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
