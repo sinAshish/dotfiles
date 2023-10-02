@@ -22,12 +22,6 @@ export TERM=xterm-256color
 export TERMINAL='kitty'
 export EDITOR='nvim'
 export BROWSER='chrome' #brave
-alias reddit='web_search reddit'
-alias google='web_search google'
-alias github='web_search github'
-alias stackoverflow='web_search stackoverflow'
-alias scholar='web_search scholar'
-
 #
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -97,68 +91,67 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(tmux common-aliases vi-mode git zsh-autosuggestions zsh-syntax-highlighting fzf)
 # source $ZSH/oh-my-zsh.sh
-plugins=(rsync tmux common-aliases  git-prompt autopep8 git zsh-autosuggestions zsh-syntax-highlighting zsh-interactive-cd
-)
+plugins=(rsync tmux common-aliases  git-prompt git zsh-autosuggestions zsh-syntax-highlighting zsh-interactive-cd)
 #plugins=(tmux  git zsh-autosuggestions zsh-syntax-highlighting)
 plugins+=(zsh-vi-mode)
 plugins+=(zsh-fzf-history-search)
 
 source $ZSH/oh-my-zsh.sh
-bindkey -v                                                                                     
-                                                                                               
-# Restore some keymaps removed by vim keybind mode                                             
-bindkey '^P' up-history                                                                        
-bindkey '^N' down-history                                                                      
-bindkey '^?' backward-delete-char                                                              
-bindkey '^h' backward-delete-char                                                              
-bindkey '^w' backward-kill-word                                                                
-                                                                                               
-# Dependencies for the following lines                                                         
-zmodload zsh/zle                                                                               
-autoload -U colors && colors                                                                   
-                                                                                               
-# Change prompt icon + color based on insert/normal vim mode in prompt                         
-# Will have no effect if you don't use pure as your ZSH theme                                  
-export PURE_PROMPT_SYMBOL="[I] ❯"                                                              
-export PURE_PROMPT_VICMD_SYMBOL="%{$fg[green]%}[N] ❮%{$reset_color%}"                          
-                                                                                               
-# By default, we have insert mode shown on right hand side                                     
-export RPROMPT="%{$fg[blue]%}[INSERT]%{$reset_color%}"                                         
-                                                                                               
-# And also a beam as the cursor                                                                
-echo -ne '\e[5 q'                                                                              
-                                                                                               
-# Callback for vim mode change                                                                 
-function zle-keymap-select () {                                                                
-    # Only supported in these terminals                                                        
+bindkey -v
+
+# Restore some keymaps removed by vim keybind mode
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+
+# Dependencies for the following lines
+zmodload zsh/zle
+autoload -U colors && colors
+export KEYTIMEOUT=1
+# Change prompt icon + color based on insert/normal vim mode in prompt
+# Will have no effect if you don't use pure as your ZSH theme
+# export PURE_PROMPT_SYMBOL="[I] ❯"
+# export PURE_PROMPT_VICMD_SYMBOL="%{$fg[green]%}[N] ❮%{$reset_color%}"
+
+# By default, we have insert mode shown on right hand side
+export RPROMPT="%{$fg[blue]%}[INSERT]%{$reset_color%}"
+
+# And also a beam as the cursor
+echo -ne '\e[5 q'
+
+# Callback for vim mode change
+function zle-keymap-select () {
+    # Only supported in these terminals
     if [ "$TERM" = "xterm-256color" ] || [ "$TERM" = "xterm-kitty" ] || [ "$TERM" = "screen-256
 color" ]; then
-        if [ $KEYMAP = vicmd ]; then                                                           
-            # Command mode                                                                     
-            export RPROMPT="%{$fg[green]%}[NORMAL]%{$reset_color%}"                            
-                                                                                               
-            # Set block cursor                                                                 
-            echo -ne '\e[1 q'                                                                  
-        else                                                                                   
-            # Insert mode                                                                      
-            export RPROMPT="%{$fg[blue]%}[INSERT]%{$reset_color%}"                             
-                                                                                               
-            # Set beam cursor                                                                  
-            echo -ne '\e[5 q'                                                                  
-        fi                                                                                     
-    fi                                                                                         
-                                                                                               
-    if typeset -f prompt_pure_update_vim_prompt_widget > /dev/null; then                       
-        # Refresh prompt and call Pure super function                                          
-        prompt_pure_update_vim_prompt_widget                                                   
-    fi                                                                                         
-}                                                                                              
-                                                                                               
-# Bind the callback                                                                            
-zle -N zle-keymap-select                                                                       
-                                                                                               
-# Reduce latency when pressing <Esc>                                                           
-export KEYTIMEOUT=1                
+        if [ $KEYMAP = vicmd ]; then
+            # Command mode
+            export RPROMPT="%{$fg[green]%}[NORMAL]%{$reset_color%}"
+
+            # Set block cursor
+            echo -ne '\e[1 q'
+        else
+            # Insert mode
+            export RPROMPT="%{$fg[blue]%}[INSERT]%{$reset_color%}"
+
+            # Set beam cursor
+            echo -ne '\e[5 q'
+        fi
+    fi
+
+    if typeset -f prompt_pure_update_vim_prompt_widget > /dev/null; then
+        # Refresh prompt and call Pure super function
+        prompt_pure_update_vim_prompt_widget
+    fi
+}
+
+# Bind the callback
+zle -N zle-keymap-select
+
+# Reduce latency when pressing <Esc>
+export KEYTIMEOUT=1
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -196,8 +189,8 @@ export KEYTIMEOUT=1
 # ZVM_VI_HIGHLIGHT_BACKGROUND=#ff0000           # Hex value
 # ZVM_VI_HIGHLIGHT_EXTRASTYLE=bold,underline    # bold and underline
 # Minimal Example
-VI_MODE_SET_CURSOR=true                                                                        
-VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true                                                       
+# VI_MODE_SET_CURSOR=true
+# VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 
 
 # User configuration
@@ -232,4 +225,16 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+ # Print tree structure in the preview window
+export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
